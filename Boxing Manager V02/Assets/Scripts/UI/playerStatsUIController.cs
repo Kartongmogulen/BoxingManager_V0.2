@@ -15,6 +15,7 @@ public class playerStatsUIController : MonoBehaviour
     //DEFEND
     public TextMeshProUGUI guardHeadText;
     public TextMeshProUGUI guardBodyText;
+    public TextMeshProUGUI guardFlexibleText;
     //HEALTH
     public TextMeshProUGUI healthHeadText;
     public TextMeshProUGUI healthBodyText;
@@ -22,6 +23,8 @@ public class playerStatsUIController : MonoBehaviour
     public TextMeshProUGUI staminaRecoveryHealthText;
     //PROVISORISKA STATS FIGHT
     public TextMeshProUGUI jabMeasureActiveText;
+    public TextMeshProUGUI guardHeadDuringFightText;
+    public TextMeshProUGUI guardBodyDuringFightText;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +36,7 @@ public class playerStatsUIController : MonoBehaviour
         bodySnatcherPointsText.text = "Bodysnatcher: " + Player.reduceOpponentStaminaRecoveryChance;
         guardHeadText.text = "Guard (Head): " + Player.guardHead;
         guardBodyText.text = "Guard (Body): " + Player.guardBody;
+        guardFlexibleText.text = "Guard Flexible Points: " + Player.guardFlexibleDuringFight;
         healthHeadText.text = "Head: " + Player.headHealthNow;
         healthBodyText.text = "Body: " + Player.bodyHealthNow;
         staminaHealthText.text = "Stamina, Max: " + Player.staminaHealthNow;
@@ -48,6 +52,7 @@ public class playerStatsUIController : MonoBehaviour
         bodySnatcherPointsText.text = "Bodysnatcher: " + Player.reduceOpponentStaminaRecoveryChance;
         guardHeadText.text = "Guard (Head): " + Player.guardHead;
         guardBodyText.text = "Guard (Body): " + Player.guardBody;
+        guardFlexibleText.text = "Guard Flexible Points: " + Player.guardFlexibleDuringFight;
         healthHeadText.text = "Head: " + Player.headHealthNow;
         healthBodyText.text = "Body: " + Player.bodyHealthNow;
         staminaHealthText.text = "Stamina, Max: " + Player.staminaHealthNow;
@@ -62,5 +67,11 @@ public class playerStatsUIController : MonoBehaviour
             jabMeasureActiveText.text = "Jab Measure: ACTIVE";
         else
             jabMeasureActiveText.text = "Jab Measure: " + Player.measureJabSuccededDurigFight + "/" + Player.measureJabLimit;
+    }
+
+    public void guardDuringFight()
+    {
+        guardHeadDuringFightText.text = "Guard Head: " + Player.guardHead;
+        guardBodyDuringFightText.text = "Guard Body: " + Player.guardBody;
     }
 }

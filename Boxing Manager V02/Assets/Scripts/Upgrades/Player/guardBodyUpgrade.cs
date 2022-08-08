@@ -5,7 +5,7 @@ using UnityEngine;
 public class guardBodyUpgrade : MonoBehaviour
 {
     public player playerOne;
-
+   
     public void add()
     {
         if (playerOne.expPointsNow > 0)

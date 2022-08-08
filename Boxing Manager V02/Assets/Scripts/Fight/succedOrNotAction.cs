@@ -14,7 +14,7 @@ public class succedOrNotAction : MonoBehaviour
     public bool action(int attackerStat, int defenderStat, bool head)
     {
 
-        Debug.Log("Attacker accuracy: " + attackerStat);
+        //Debug.Log("Attacker accuracy: " + attackerStat);
         //Debug.Log("Defender Guard: " + defenderStat);
         //Will the action succed?
 

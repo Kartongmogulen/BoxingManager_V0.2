@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class mouseOverButtonInfo : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class mouseOverButtonInfo : MonoBehaviour
     public Text accuracyStatText;
     public Text guardStatText;
 
-    
+    //public TextMeshProUGUI accuracyStatText;
+
 
     public void mouseOverJabHead()
     {
@@ -39,13 +41,15 @@ public class mouseOverButtonInfo : MonoBehaviour
 
         if (playerTwoAccuracyStatModifier > 0)
         {
-            Debug.Log("MouseOverJab Mod != 0");
+            //Debug.Log("MouseOverJab Mod != 0");
             accuracyStatText.color = new Color(1,0,0,1); 
+   
         }
         else
         {
-            Debug.Log("MouseOverJab Mod = 0");
+            //Debug.Log("MouseOverJab Mod = 0");
             accuracyStatText.color = new Color(0, 0, 0, 1);
+           
         }
     }
 

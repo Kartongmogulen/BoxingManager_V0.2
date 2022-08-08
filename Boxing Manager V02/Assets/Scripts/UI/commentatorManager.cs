@@ -12,7 +12,7 @@ public class commentatorManager : MonoBehaviour
     public TextMeshProUGUI commentatorText;
 
     public GameObject fightScriptsGO;
-
+   
     public void startTimer(player Attacker, player Defender, bool head, bool jab, bool actionCompleted, bool specialAttack)
     {
         //Debug.Log("StartTimer: Name " + Attacker.name);
@@ -64,6 +64,7 @@ public class commentatorManager : MonoBehaviour
         else
             commentatorText.text = "MISS!";
 
+        GetComponent<attackHeadManager>().inactiveImage();
     }
 
     public void actionCompletedUpdate()

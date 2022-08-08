@@ -58,6 +58,7 @@ public class fightStatistics : MonoBehaviour
     public void addVictory()
     {
         addResult("W", results);
+        
     }
 
     public void addLose()

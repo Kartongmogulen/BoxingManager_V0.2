@@ -19,12 +19,12 @@ public class actionsLeftPlayer : MonoBehaviour
         playersTurnText.text = "Player One (turns left): " + actionPointsNow;
     }
 
-    public void subActionPoints()
+    public void subActionPoints(int actionPoints)
     {
         playerOnesTurn = GetComponent<fightManager>().playerOnesTurn;
  
-        actionPointsNow--;
-        if (actionPointsNow == 0)
+        actionPointsNow -= actionPoints;
+        if (actionPointsNow <= 0)
             resetActionPoints();
 
         updateText();

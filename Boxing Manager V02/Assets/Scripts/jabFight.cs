@@ -18,7 +18,7 @@ public class jabFight : MonoBehaviour
         SuccedOrNotAction = GetComponent<succedOrNotAction>();
     }
 
-    public void jabHead(player attacker, player defender)
+    public void jabHead(player attacker, player defender, bool singelPunch)
     {
         
         //2.START-----------
@@ -40,6 +40,7 @@ public class jabFight : MonoBehaviour
             //9.1 END----------
 
             //3.START-------------------
+
             fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, true, true, true, false);
         }
         else
@@ -47,21 +48,31 @@ public class jabFight : MonoBehaviour
             fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, true, true, false, false);
             attacker.fightStatisticsNumberOfFailedActions();
         }
+        fightUIScripts.GetComponent<attackHeadManager>().playerOneJab();
         //3.END-------------------
 
         //4.START----------
-        attacker.GetComponent<player>().updateStamina(attacker.jabStaminaUseLow);
+        attacker.GetComponent<player>().updateStamina(attacker.jabStaminaUseHead);
         //4.END----------
         if (attacker.Opponent == false)
         {
             GetComponent<fightManager>().updatePlayerOne();
-            GetComponent<fightManager>().afterActionChoicePlayerOne();
+            //GetComponent<fightManager>().afterActionChoicePlayerOne();
+            if (singelPunch == true)
+            {
+                GetComponent<fightManager>().afterActionChoicePlayerOne();
+            }
         }
         else
         {
             GetComponent<fightManager>().updatePlayerTwo();
-            GetComponent<fightManager>().afterActionChoicePlayerTwo();
+            //GetComponent<fightManager>().afterActionChoicePlayerTwo();
+            if (singelPunch == true)
+            {
+                GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
+            }
         }
+
     }
 
     public void measureJab(player attacker, player defender)
@@ -90,7 +101,7 @@ public class jabFight : MonoBehaviour
             fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, true, true, false, false);
             attacker.fightStatisticsNumberOfFailedActions();
         }
-
+        fightUIScripts.GetComponent<attackHeadManager>().playerOneJab();
         //3.END-------------------
         //4.START----------
         attacker.GetComponent<player>().updateStamina(attacker.jabStaminaUseLow);
@@ -103,7 +114,7 @@ public class jabFight : MonoBehaviour
         else
         {
             GetComponent<fightManager>().updatePlayerTwo();
-            GetComponent<fightManager>().afterActionChoicePlayerTwo();
+            GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
         }
     }
 
@@ -126,7 +137,7 @@ public class jabFight : MonoBehaviour
             Debug.Log("keepdistance: " + attacker.jabKeepDistanceActive);
 
             //9.1.2 END--------
-
+            fightUIScripts.GetComponent<attackHeadManager>().playerOneJab();
             //3.START-------------------
             fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, true, true, true, false);
         }
@@ -149,7 +160,7 @@ public class jabFight : MonoBehaviour
         else
         {
             GetComponent<fightManager>().updatePlayerTwo();
-            GetComponent<fightManager>().afterActionChoicePlayerTwo();
+            GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
         }
 
     }

@@ -11,6 +11,7 @@ public class startNextFight : MonoBehaviour
     public GameObject fightScriptGO;
     public GameObject FightUiGO;
     public player playerOne;
+    public player playerTwo;
 
     public healthPanelTextUpdate HealthPanelTextUpdate;
 
@@ -33,6 +34,7 @@ public class startNextFight : MonoBehaviour
         HealthPanelTextUpdate.updatePlayerOneText();
         playerOne.startFight();
         saveStatsForPlayer();
+        saveStatsForOpponent();
     }
 
     //Sparar stats för spelaren så det ej går att få lägre vid nästa match än dessa poäng.
@@ -45,11 +47,21 @@ public class startNextFight : MonoBehaviour
         playerOne.reduceOpponentStaminaRecoveryChanceStatAfterLastFight = playerOne.reduceOpponentStaminaRecoveryChance;
         playerOne.guardHeadStatAfterLastFight = playerOne.guardHead;
         playerOne.guardBodyStatAfterLastFight = playerOne.guardBody;
+        playerOne.guardFlexibleDuringFightAfterLastFight = playerOne.guardFlexibleDuringFight;
         playerOne.headHealthAfterLastFight = playerOne.headHealthStart;
         playerOne.bodyHealthStatAfterLastFight = playerOne.bodyHealthStart;
         playerOne.staminaHealthAfterLastFight = playerOne.playerLvlHealthStamina;
         playerOne.staminaRecoveryBetweenRoundsAfterLastFight = playerOne.staminaRecoveryBetweenRounds;
     }
+
+    public void saveStatsForOpponent()
+    {
+        playerTwo = fightScriptGO.GetComponent<fightManager>().PlayerTwo;
+
+        playerTwo.guardHeadStatAfterLastFight = playerTwo.guardHead;
+        playerTwo.guardBodyStatAfterLastFight = playerTwo.guardBody;
+    }
+
     public void victoryPanelToPlayerPanel()
     {
         victoryPanelGO.SetActive(false);

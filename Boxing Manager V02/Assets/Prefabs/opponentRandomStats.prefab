@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7965687812150541684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6234638066540393236}
+  - component: {fileID: -294837496861472333}
+  - component: {fileID: 241491176263880194}
+  m_Layer: 0
+  m_Name: opponentRandomStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6234638066540393236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965687812150541684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-294837496861472333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965687812150541684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b68a43c679a7d2f40bafa15a9fa082fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  fighterStateNow: 0
+  fightStyleNow: 0
+  FightStyleSONow: {fileID: 11400000, guid: a816d357e5d55d841a366cda5da20cca, type: 2}
+  FightStatsShared: {fileID: 11400000, guid: a5d15e66e0aa09d44be11271206c3b72, type: 2}
+  StaminaManager: {fileID: 11400000, guid: 90a1e0847c0907646b0046562f61ac39, type: 2}
+  playerPanel: {fileID: 0}
+  fightStatsGO: {fileID: 0}
+  Opponent: 0
+  expPointsStart: 0
+  playerLvl: 0
+  playerLvlHealthHead: 0
+  playerLvlHealthBody: 0
+  playerLvlHealthStamina: 0
+  playerLvlHealthStaminaRecovery: 0
+  bodyHealthStart: 0
+  bodyHealthStatAfterLastFight: 0
+  headHealthStart: 0
+  headHealthAfterLastFight: 0
+  staminaHealthStart: 0
+  staminaHealthAfterLastFight: 0
+  staminaRecoveryBetweenRounds: 0
+  staminaRecoveryBetweenRoundsAfterLastFight: 0
+  guardHead: 0
+  guardHeadStatAfterLastFight: 0
+  guardBody: 0
+  guardBodyStatAfterLastFight: 0
+  accuracy: 0
+  accuracyStatAfterLastFight: 0
+  strength: 0
+  strengthStatAfterLastFight: 0
+  endurance: 0
+  knockdownChance: 0
+  knockdownChanceStatAfterLastFight: 0
+  reduceOpponentStaminaRecoveryChance: 0
+  reduceOpponentStaminaRecoveryChanceStatAfterLastFight: 0
+  measureJabLimit: 0
+  measureJabSuccededDurigFight: 0
+  measureJabPotentialIncreaseAccuracy: 0
+  measureJabIncreaseAccuracyWhenActive: 0
+  jabKeepDistanceLvl: 0
+  jabKeepDistanceActive: 0
+  jabKeepDistanceStatBoost: 0
+  jabAccuracyHead: 0
+  jabStaminaUseHead: 0
+  jabDamageHead: 0
+  jabStaminaUseLow: 0
+  jabDamageLow: 0
+  crossAccuracyHead: 0
+  crossStaminaUseHead: 0
+  crossDamageHead: 0
+  crossKnockDownHead: 0
+  jabAccuracyBody: 0
+  jabStaminaUseBody: 0
+  jabDamageBody: 0
+  jabStaminaDamageBody: 0
+  crossAccuracyBody: 0
+  crossStaminaUseBody: 0
+  crossDamageBody: 0
+  crossStaminaDamageBody: 0
+  crossStaminaRecoveryDamageBody: 0
+  bodyHealthNow: 0
+  headHealthNow: 0
+  staminaHealthNow: 0
+  knockdownCounter: 0
+  damageTakenDuringRound: 0
+  expPointsNow: 0
+  actionsPerformed: 0
+  actionsSucceded: 0
+  actionsFailed: 0
+  oneTwoUnlocked: 0
+  staminaBoundriePassed: 0
+--- !u!114 &241491176263880194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965687812150541684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a1d29b8abe2674e96b7a66e541f547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerList: {fileID: 0}
+  AttributeLevelManager: {fileID: 0}
+  Player: {fileID: 0}
+  FightStyleSO: {fileID: 11400000, guid: a816d357e5d55d841a366cda5da20cca, type: 2}
+  CreateOpponentAttributeList: {fileID: 0}
+  lvlOpponent: 0
+  accuracyAndStrengthPointsToShare: 3
+  accuracyMin: 3
+  strengthMin: 0
+  bodyHealth: 0
+  headHealth: 0
+  staminaHealth: 0
+  staminaRecoveryBetweenRounds: 0
+  fightStyleValue: 0
+  maxLvlPerAttribute: 0
+  randomInt: 0

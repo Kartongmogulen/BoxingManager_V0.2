@@ -5,12 +5,15 @@ public class player : MonoBehaviour
     public string name;
     public fighterState fighterStateNow;
     public fightStyle fightStyleNow;
+    public fightStyleSO FightStyleSONow;
     public fightStatsShared FightStatsShared;
+    public staminaManager StaminaManager;
 
     public GameObject playerPanel;
     public GameObject fightStatsGO;
 
     public bool Opponent; //Om det är en motståndare eller egna spelaren
+    public int expPointsNow;
 
     //StartVärden
     public int expPointsStart; //Antal poäng att dela ut vid start
@@ -20,7 +23,7 @@ public class player : MonoBehaviour
     public int playerLvlHealthStamina;
     public int playerLvlHealthStaminaRecovery;
 
-    //HEALTH
+    [Header("Health")]
     public int bodyHealthStart;
     public int bodyHealthStatAfterLastFight;//Stat efter senaste matchen, går ej att gå lägre än detta.
     public int headHealthStart;
@@ -30,35 +33,37 @@ public class player : MonoBehaviour
     public int staminaRecoveryBetweenRounds;
     public int staminaRecoveryBetweenRoundsAfterLastFight;//Stat efter senaste matchen, går ej att gå lägre än detta.
 
-    //DEFENCE
+    
+    [Header("Defence")]
     public int guardHead;
     public int guardHeadStatAfterLastFight;//Stat efter senaste matchen, går ej att gå lägre än detta.
     public int guardBody;
     public int guardBodyStatAfterLastFight;//Stat efter senaste matchen, går ej att gå lägre än detta.
+    public int guardFlexibleDuringFight;
+    public int guardFlexibleDuringFightAfterLastFight; //Stat efter senaste matchen, går ej att gå lägre än detta.
+    
 
-    //ATTACK
+    [Header("Attack Base")]
     public int accuracy; //Chans att träffa
     public int accuracyStatAfterLastFight; //Stat efter senaste matchen, går ej att gå lägre än detta.
     public int strength; //Skada
     public int strengthStatAfterLastFight; //Stat efter senaste matchen, går ej att gå lägre än detta.
     public int endurance; //Stamina use
 
-    //SPECIAL STATS
+   [Header("Special Stats")]
     public int knockdownChance; //Högre värde = större chans att knocka motståndaren
     public int knockdownChanceStatAfterLastFight; //Högre värde = större chans att knocka motståndaren
     public int reduceOpponentStaminaRecoveryChance; //Högre värde = större chans att lyckas
     public int reduceOpponentStaminaRecoveryChanceStatAfterLastFight; //Högre värde = större chans att lyckas
-    
-    public int measureJabLimit; //Gränsen för antal aktioner innan positiva egenskaper börjar gälla
-    public int measureJabSuccededDurigFight; //Antalet lyckade under matchen. SKA NOLLSTÄLLAS
+
+    public int measureJabLimit; //Gränsen för antal aktioner innan positiva egenskaper börjar gälla  
     public int measureJabPotentialIncreaseAccuracy;//Ökade stat OM/NÄR den är aktiva
-    public int measureJabIncreaseAccuracyWhenActive; //Används vid beräkning och är 0 om den inte är aktiverad än.
 
     public int jabKeepDistanceLvl;
     public bool jabKeepDistanceActive;
     public int jabKeepDistanceStatBoost;//Hur mycket motståndarens Accuracy minskar
 
-    //ATTACK HEAD
+   [Header("Attack Head")]
     public int jabAccuracyHead;
     public int jabStaminaUseHead;
     public int jabDamageHead;
@@ -72,6 +77,7 @@ public class player : MonoBehaviour
     public int crossKnockDownHead;
 
     //ATTACK BODY
+    [Header("Attack Body")]
     public int jabAccuracyBody;
     public int jabStaminaUseBody;
     public int jabDamageBody;
@@ -83,40 +89,59 @@ public class player : MonoBehaviour
     public int crossStaminaDamageBody;
     public int crossStaminaRecoveryDamageBody;
 
-    //Värdering som ändras
+    [Header("During fight")]
     public int bodyHealthNow;
     public int headHealthNow;
     public int staminaHealthNow;
-
     public int knockdownCounter;
     public int damageTakenDuringRound;
-
-    public int expPointsNow;
-
+     
     //Statistik under match
     public int actionsPerformed;
     public int actionsSucceded;
     public int actionsFailed;
 
+    public int measureJabSuccededDurigFight; //Antalet lyckade under matchen. SKA NOLLSTÄLLAS
+
+    //Stamina Manager
+    public int staminaBoundriePassed; //Vilken nivå som spelaren påverkas av "trötthet" aka Stamina.
+    public int measureJabIncreaseAccuracyWhenActive; //Används vid beräkning och är 0 om den inte är aktiverad än.
+
+    [Header("Skills known")]
+
+    //Combos
+    public bool oneTwoUnlocked;
 
     public void Awake()
     {
+        playerPanel = GameObject.Find("===PLAYERPANEL===");
+
         jabStaminaUseLow = FightStatsShared.jabStaminaUseLow;
-        jabDamageLow = Mathf.RoundToInt(strength/FightStatsShared.jabStaminaUseLow);
+        jabDamageLow = Mathf.RoundToInt(strength / FightStatsShared.jabStaminaUseLow);
+
+        accuracyStatAfterLastFight = accuracy;
+        strengthStatAfterLastFight = strength;
 
         if (Opponent == true)
         {
+            playerLvlHealthBody = playerLvl;
+            playerLvlHealthHead = playerLvl;
+            playerLvlHealthStamina = playerLvl;
+
             bodyHealthStart = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvlHealthBody];
             headHealthStart = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvlHealthHead];
             staminaHealthStart = playerPanel.GetComponent<attributeLevelManager>().staminaHealthByLvl[playerLvlHealthStamina];
+            
             startFight();
         }
 
+        
         bodyHealthNow = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvl];
-     
+
         headHealthNow = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvl];
 
         staminaHealthNow = playerPanel.GetComponent<attributeLevelManager>().staminaHealthByLvl[playerLvl];
+        
         staminaRecoveryBetweenRounds = playerPanel.GetComponent<attributeLevelManager>().staminaHealthRecoveryByLvl[playerLvlHealthStaminaRecovery];
 
         //Exp Points
@@ -163,7 +188,7 @@ public class player : MonoBehaviour
         }
         else
             jabDamageBody = strength - FightStatsShared.jabCrossDiffDamage;
-        
+
         jabDamageLow = Mathf.RoundToInt(strength / 4);
 
         //crossDamageHead = strength;
@@ -186,9 +211,10 @@ public class player : MonoBehaviour
 
     public void fighterStateUpdate(bool knockdown)
     {
-        if (knockdown == true){
+        if (knockdown == true)
+        {
             fighterStateNow = fighterState.Knockdown;
-           
+
         }
     }
 
@@ -215,12 +241,12 @@ public class player : MonoBehaviour
 
     public void updateStamina(int staminaChange)
     {
-      staminaHealthNow = staminaUpdate.updateStamina(staminaHealthNow, staminaChange);
+        staminaHealthNow = staminaUpdate.updateStamina(staminaHealthNow, staminaChange);
 
         if (staminaHealthNow <= 0)
         {
             fighterStateUpdate(true); //Spelaren blir knockad
-            staminaHealthNow = staminaHealthStart/2;
+            staminaHealthNow = staminaHealthStart / 2;
             GetComponent<fightStatsKnockdownCause>().lowStamina();
         }
 
@@ -228,15 +254,15 @@ public class player : MonoBehaviour
 
     public void updateHeadHealth(int healthComsumed)
     {
-       headHealthNow = headHealthUpdate.updateHeadHealth(headHealthNow, healthComsumed);
-       damageTakenDuringRound += healthComsumed;
+        headHealthNow = headHealthUpdate.updateHeadHealth(headHealthNow, healthComsumed);
+        damageTakenDuringRound += healthComsumed;
 
         if (headHealthNow <= 0)
         {
             //Debug.Log("updateHeadHealth Zero");
             //Debug.Log("headHealthStart " + headHealthStart);
             fighterStateUpdate(true);
-            headHealthNow = headHealthStart/2;
+            headHealthNow = headHealthStart / 2;
             GetComponent<fightStatsKnockdownCause>().lowHeadHealth();
 
             /*if (Opponent == true)
@@ -262,6 +288,7 @@ public class player : MonoBehaviour
 
     public void resetAfterFight()
     {
+       
         //Debug.Log("Stamina Recovery: " + staminaRecoveryBetweenRounds);
         headHealthNow = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvlHealthHead];
         bodyHealthNow = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvlHealthBody];
@@ -269,6 +296,7 @@ public class player : MonoBehaviour
         staminaRecoveryBetweenRounds = playerPanel.GetComponent<attributeLevelManager>().staminaHealthRecoveryByLvl[playerLvlHealthStaminaRecovery];
         knockdownCounter = 0;
         actionsPerformed = 0;
+        damageTakenDuringRound = 0;
 
         measureJabIncreaseAccuracyWhenActive = 0;
         measureJabSuccededDurigFight = 0;
@@ -295,5 +323,73 @@ public class player : MonoBehaviour
         actionsFailed++;
     }
 
-    
+    //Hur spelaren påverkas av Stamina
+    public void staminaEffect()
+    {
+        //Debug.Log("Stamina Effect");
+        //Nollställning
+        staminaBoundriePassed = 0;
+        accuracy = accuracyStatAfterLastFight;
+        strength = strengthStatAfterLastFight;
+
+        //Kontrollerar vilken nivå spelaren ligger på.
+        for (int i = 0; StaminaManager.staminaBoundriesEffect.Length > i; i++)
+        {
+
+            if ((Mathf.Round(staminaHealthNow * 100 / staminaHealthStart)) < StaminaManager.staminaBoundriesEffect[i])
+            {
+                staminaBoundriePassed++;
+            }
+        }
+        //Debug.Log("Stamina Gräns: " + StaminaManager.reduceAccuracy[staminaBoundriePassed]);
+        //Debug.Log("Minska Accuracy: " + Mathf.Round(accuracy * StaminaManager.reduceAccuracy[staminaBoundriePassed] / 100));
+
+        //Påverkar Accuracy
+        accuracy = Mathf.RoundToInt(Mathf.Round(accuracy - accuracy * StaminaManager.reduceAccuracy[staminaBoundriePassed] / 100));
+        //Vid små tal ska man ändå påverkas t.ex om minskningen blir 0,5 är det i formeln ovanför = 0
+        if (staminaBoundriePassed > 0 && accuracy == accuracyStatAfterLastFight)
+        {
+            accuracy--;
+        }
+
+        //Accuracy
+        jabAccuracyHead = accuracy;
+        crossAccuracyHead = accuracy;
+        jabAccuracyBody = accuracy;
+        crossAccuracyBody = accuracy;
+
+        //Påverkar Strength
+        strength = Mathf.RoundToInt(Mathf.Round(strength - strength * StaminaManager.reduceStrength[staminaBoundriePassed] / 100));
+
+        //Vid små tal ska man ändå påverkas t.ex om minskningen blir 0,5 är det i formeln ovanför = 0
+        if (staminaBoundriePassed > 0 && strength == strengthStatAfterLastFight)
+        {
+            strength--;
+        }
+
+        crossDamageHead = strength;
+        crossDamageBody = strength;
+
+        if (strength - FightStatsShared.jabCrossDiffDamage <= 0)
+        {
+            jabDamageHead = 1;
+        }
+        else
+            jabDamageHead = strength - FightStatsShared.jabCrossDiffDamage;
+
+        if (strength - FightStatsShared.jabCrossDiffDamage <= 0)
+        {
+            jabDamageBody = 1;
+        }
+        else
+            jabDamageBody = strength - FightStatsShared.jabCrossDiffDamage;
+
+        jabDamageLow = Mathf.RoundToInt(strength / 4);
+
+        //Debug.Log(name + (" Accuracy: " + accuracy));
+        //Debug.Log(name + (" Strength: " + strength));
+    }
 }
+
+
+ 

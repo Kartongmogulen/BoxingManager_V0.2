@@ -22,14 +22,14 @@ public class playerTwoAction : MonoBehaviour
 
         if (randomNumb <= 33)
         {
-            GetComponent<fightManager>().playerTwoJabHead();
+            GetComponent<fightManager>().playerTwoJabHeadSingel();
             //UIScriptsGO.GetComponent<playerTwoActionDisplay>().updateText(i, "Jab Head");
             //Debug.Log("Jab Head");
         }
 
         else if (randomNumb <= 66)
         {
-            GetComponent<fightManager>().playerTwoCrossHead();
+            GetComponent<fightManager>().playerTwoCrossHead(0);
             //Debug.Log("Cross Head");
         }
 
@@ -68,13 +68,13 @@ public class playerTwoAction : MonoBehaviour
 
         else if (randomNumb <= 85)
         {
-            GetComponent<fightManager>().playerTwoCrossHead();
+            GetComponent<fightManager>().playerTwoCrossHead(0);
             //Debug.Log("Cross Head");
         }
 
         else
         {
-            GetComponent<fightManager>().playerTwoJabHead();
+            GetComponent<fightManager>().playerTwoJabHeadSingel();
             //Debug.Log("Jab Head");
         }
     }
@@ -94,7 +94,7 @@ public class playerTwoAction : MonoBehaviour
         
         if (randomNumb >= (100 / numberOfActionsAvailable) && randomNumb <= (100 / numberOfActionsAvailable)*2)
         {
-            GetComponent<fightManager>().playerTwoJabHead();
+            GetComponent<fightManager>().playerTwoJabHeadSingel();
             Debug.Log("Jab Body" + i);
             i++;
         }
@@ -110,7 +110,7 @@ public class playerTwoAction : MonoBehaviour
         
          if (randomNumb >= (100 / numberOfActionsAvailable)*3 && randomNumb <= (100 / numberOfActionsAvailable)*4)
         {
-            GetComponent<fightManager>().playerTwoCrossHead();
+            GetComponent<fightManager>().playerTwoCrossHead(0);
             Debug.Log("Cross Head" + i);
             i++;
         }
@@ -137,34 +137,41 @@ public class playerTwoAction : MonoBehaviour
 
         if (randomNumb <= (100 / 2))
         {
-            GetComponent<fightManager>().playerTwoJabHead();
+            GetComponent<fightManager>().playerTwoJabHeadSingel();
         }
 
         else
-            GetComponent<fightManager>().playerTwoCrossHead();
+            GetComponent<fightManager>().playerTwoCrossHead(0);
 
+    }
+
+    public void oneTwoCombo()
+    {
+        GetComponent<combinations>().oneTwo_JabCrossPlayerTwo();
     }
 
     public void test()
     {
-        if (i == 0)
-            onlyJabKeepDistance();
+        /*if (i == 0)
+            jabHead();
         else
             jabHead();
         i++;
+        */
 
+        GetComponent<combinations>().oneTwo_JabCrossPlayerTwo();
     }
 
         public void crossHead()
     {
-        GetComponent<fightManager>().playerTwoCrossHead();
+        GetComponent<fightManager>().playerTwoCrossHead(0);
         i++;
     }
 
     public void jabHead()
     {
-        GetComponent<fightManager>().playerTwoJabHead();
-        i++;
+        GetComponent<fightManager>().playerTwoJabHeadSingel();
+        //i++;
     }
 
     public void jabBody()
