@@ -178,6 +178,7 @@ public class playerTwoAction : MonoBehaviour
     {
         GetComponent<fightManager>().playerTwoJabBody();
         i++;
+        //Debug.Log("PlayerTwo Jab Body");
     }
 
     public void crossBody()

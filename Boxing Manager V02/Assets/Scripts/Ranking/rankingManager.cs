@@ -32,7 +32,7 @@ public class rankingManager : MonoBehaviour
         //Blir Spelaren Rankad.
         if (playerRankedLvl >= CreateOpponentAttributeListSO.accuracyAndStrengthPointsToShare.Length)
         {
-            Debug.Log("Spelaren är nu RANKAD");
+            //Debug.Log("Spelaren är nu RANKAD");
             playerRanked = true;
 
         }

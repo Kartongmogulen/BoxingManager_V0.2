@@ -93,8 +93,21 @@ public class mouseOverButtonInfo : MonoBehaviour
         damageText.text = "Damage: " + PlayerOne.crossDamageHead;
         staminaDamageText.text = "Stamina damage: " + 0;
         staminaUsePlayerText.text = "Stamina use: " + PlayerOne.crossStaminaUseHead;
-        accuracyStatText.text = "Accuracy: " + PlayerOne.crossAccuracyHead;
+        accuracyStatText.text = "Accuracy: " + (PlayerOne.jabAccuracyHead + PlayerOne.measureJabIncreaseAccuracyWhenActive - playerTwoAccuracyStatModifier); ;
         guardStatText.text = "Guard (def): " + PlayerTwo.guardHead;
+
+        if (playerTwoAccuracyStatModifier > 0)
+        {
+            //Debug.Log("MouseOverJab Mod != 0");
+            accuracyStatText.color = new Color(1, 0, 0, 1);
+
+        }
+        else
+        {
+            //Debug.Log("MouseOverJab Mod = 0");
+            accuracyStatText.color = new Color(0, 0, 0, 1);
+
+        }
     }
 
     public void mouseOverCrossBody()

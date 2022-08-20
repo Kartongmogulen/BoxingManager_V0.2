@@ -24,6 +24,7 @@ public class fightStatistics : MonoBehaviour
     public void addRound(int round)
     {
         fightEndedRound(round, roundFightEnded);
+
     }
 
 

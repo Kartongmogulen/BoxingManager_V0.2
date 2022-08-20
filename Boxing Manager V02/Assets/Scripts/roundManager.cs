@@ -19,8 +19,12 @@ public class roundManager : MonoBehaviour
 
     public GameObject victoryPanelGO;
     public GameObject statisticsGO;
+    public GameObject simPanelGO;
 
     public TextMeshProUGUI roundClock;
+    public TextMeshProUGUI simPanelRoundClock;
+
+    public int bugg_i; //FÖR BUGG
     private void Start()
     {
         roundFightLength = GetComponent<fightManager>().roundFightLength;
@@ -30,6 +34,9 @@ public class roundManager : MonoBehaviour
 
     public void afterPlayerAction()
     {
+        bugg_i++;
+        //Debug.Log(bugg_i);
+
         secInRound += 180 / roundActionsPerPlayer / 2;
         
         if (secInRound>=60)
@@ -41,17 +48,18 @@ public class roundManager : MonoBehaviour
         if (minInRound == 3)
         {
             resetRound();
-            Debug.Log("Round now: " + roundNow);
+            
+            //Debug.Log("Round now: " + roundNow);
         }
 
         roundClock.text = "Round: " + roundNow + "  Min: " + minInRound +  " Sec: " + secInRound;
-       
+        simPanelRoundClock.text = "Round: " + roundNow + "  Min: " + minInRound + " Sec: " + secInRound;
     }
 
     //Nollställer vid rondens slut
    public void resetRound()
     {
-        //Debug.Log("Reset round");
+        //Debug.Log("Round now: " + roundNow);
         roundNow++;
         minInRound = 0;
 
@@ -67,15 +75,25 @@ public class roundManager : MonoBehaviour
             GetComponent<fightManager>().fightEndedDecision();
             //victoryPanelGO.GetComponent<afterFightUpdate>().decisionUpdate(playerOneWonOnDecision);
         }
+
+        //SIMULERING
+        if (GetComponent<fightManager>().simulation == true )
+        {
+            simPanelGO.GetComponent<simulateFight>().roundEnded = true; //För att kunna simulera en rond
+            simPanelGO.GetComponent<simulateFight>().resetDataAfterRound();
+            simPanelGO.GetComponent<simulateFight>().startFight();
+        }
     }
 
     public void resetRoundAfterFight()
     {
+        //Debug.Log("ResetRoundAfterFight");
         roundNow = 1;
         minInRound = 0;
         secInRound = 0;
 
         roundClock.text = "Round: " + roundNow + "  Min: " + minInRound + " Sec: " + secInRound;
+        simPanelRoundClock.text = "Round: " + roundNow + "  Min: " + minInRound + " Sec: " + secInRound;
     }
 
     public void addStatisticFightEndedRound()

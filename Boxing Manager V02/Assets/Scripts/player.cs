@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    public int staminaInt; //ENDAST FÖR FELSÖKNING
+    public int headHealthInt; //ENDAST FÖR FELSÖKNING
+
     public string name;
     public fighterState fighterStateNow;
     public fightStyle fightStyleNow;
@@ -131,22 +134,22 @@ public class player : MonoBehaviour
             bodyHealthStart = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvlHealthBody];
             headHealthStart = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvlHealthHead];
             staminaHealthStart = playerPanel.GetComponent<attributeLevelManager>().staminaHealthByLvl[playerLvlHealthStamina];
-            
+
             startFight();
         }
-
         
-        bodyHealthNow = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvl];
 
-        headHealthNow = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvl];
+            bodyHealthNow = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvlHealthBody];
 
-        staminaHealthNow = playerPanel.GetComponent<attributeLevelManager>().staminaHealthByLvl[playerLvl];
+            headHealthNow = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvlHealthHead];
+
+            staminaHealthNow = playerPanel.GetComponent<attributeLevelManager>().staminaHealthByLvl[playerLvlHealthStamina];
+
+            staminaRecoveryBetweenRounds = playerPanel.GetComponent<attributeLevelManager>().staminaHealthRecoveryByLvl[playerLvlHealthStaminaRecovery];
+
+            //Exp Points
+            expPointsNow = expPointsStart;
         
-        staminaRecoveryBetweenRounds = playerPanel.GetComponent<attributeLevelManager>().staminaHealthRecoveryByLvl[playerLvlHealthStaminaRecovery];
-
-        //Exp Points
-        expPointsNow = expPointsStart;
-
     }
 
     public void startFight()
@@ -241,6 +244,9 @@ public class player : MonoBehaviour
 
     public void updateStamina(int staminaChange)
     {
+        staminaInt++;
+        //Debug.Log(name + " Stamina: " + staminaHealthNow);
+        //Debug.Log(name + " Antal Stamina Update: " + staminaInt);
         staminaHealthNow = staminaUpdate.updateStamina(staminaHealthNow, staminaChange);
 
         if (staminaHealthNow <= 0)
@@ -254,8 +260,12 @@ public class player : MonoBehaviour
 
     public void updateHeadHealth(int healthComsumed)
     {
+        headHealthInt++;
+
         headHealthNow = headHealthUpdate.updateHeadHealth(headHealthNow, healthComsumed);
         damageTakenDuringRound += healthComsumed;
+
+        //Debug.Log(name + ": " + headHealthNow);
 
         if (headHealthNow <= 0)
         {
@@ -302,9 +312,11 @@ public class player : MonoBehaviour
         measureJabSuccededDurigFight = 0;
 
         //Statistik
+        
         actionsPerformed = 0;
         actionsSucceded = 0;
         actionsFailed = 0;
+        
     }
 
     public void fightStatisticsNumberOfActions()

@@ -13,6 +13,9 @@ public class jabFight : MonoBehaviour
 
     public GameObject fightUIScripts;
 
+    public int i;//ENDAST FÖR FELSÖKNING
+    public int singelPunchInt;//ENDAST FÖR FELSÖKNING
+
     private void Start()
     {
         SuccedOrNotAction = GetComponent<succedOrNotAction>();
@@ -21,6 +24,7 @@ public class jabFight : MonoBehaviour
     public void jabHead(player attacker, player defender, bool singelPunch)
     {
         
+
         //2.START-----------
         if (defender.jabKeepDistanceActive == true)
         {
@@ -54,21 +58,36 @@ public class jabFight : MonoBehaviour
         //4.START----------
         attacker.GetComponent<player>().updateStamina(attacker.jabStaminaUseHead);
         //4.END----------
+       
+        //Debug.Log("JabHead: " + i);
+        //Debug.Log("Spelare TVÅ attackerar: " + attacker.Opponent +" " + i);
+        //Spelare Ett är attackerande
         if (attacker.Opponent == false)
         {
             GetComponent<fightManager>().updatePlayerOne();
-            //GetComponent<fightManager>().afterActionChoicePlayerOne();
-            if (singelPunch == true)
+            //GetComponent<fightManager>().afterActionChoicePlayerOne(1);
+            if (singelPunch == true && GetComponent<fightManager>().simulation == false)
             {
-                GetComponent<fightManager>().afterActionChoicePlayerOne();
+
+                GetComponent<fightManager>().afterActionChoicePlayerOne(1);
+                singelPunchInt++;
             }
+
+            
         }
+
+       
+
+        //Spelare Två är attackerande
         else
         {
+            i++;
+            Debug.Log("SpelareTvåsTur innan UpdatePlayerTwo");
             GetComponent<fightManager>().updatePlayerTwo();
             //GetComponent<fightManager>().afterActionChoicePlayerTwo();
             if (singelPunch == true)
             {
+                //Debug.Log("JabFight-script - Jab");
                 GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
             }
         }
@@ -109,7 +128,7 @@ public class jabFight : MonoBehaviour
         if (attacker.Opponent == false)
         {
             GetComponent<fightManager>().updatePlayerOne();
-            GetComponent<fightManager>().afterActionChoicePlayerOne();
+            GetComponent<fightManager>().afterActionChoicePlayerOne(1);
         }
         else
         {
@@ -155,12 +174,81 @@ public class jabFight : MonoBehaviour
         if (attacker.Opponent == false)
         {
             GetComponent<fightManager>().updatePlayerOne();
-            GetComponent<fightManager>().afterActionChoicePlayerOne();
+            GetComponent<fightManager>().afterActionChoicePlayerOne(1);
         }
         else
         {
             GetComponent<fightManager>().updatePlayerTwo();
             GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
+        }
+
+    }
+
+    public void jabBody(player attacker, player defender, bool singelPunch)
+    {
+
+
+        //2.START-----------
+        if (defender.jabKeepDistanceActive == true)
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(attacker.accuracy - defender.jabKeepDistanceStatBoost, defender.guardBody, true);
+        }
+        else
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(attacker.accuracy, defender.guardBody, true);
+        }
+        //2.END-----------
+
+        if (actionCompletedOrNot == true)
+        {
+            attacker.fightStatisticsNumberOfSuccededActions();
+            //9.1 START----------
+            defender.GetComponent<player>().updateBodyHealth(attacker.jabDamageBody);
+            defender.GetComponent<player>().updateStamina(attacker.jabStaminaDamageBody);
+            //9.1 END----------
+
+            //3.START-------------------
+
+            fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, false, true, true, false);
+        }
+        else
+        {
+            fightUIScripts.GetComponent<commentatorManager>().startTimer(attacker, defender, false, true, false, false);
+            attacker.fightStatisticsNumberOfFailedActions();
+        }
+        //fightUIScripts.GetComponent<attackHeadManager>().playerOneJab();
+        //3.END-------------------
+
+        //4.START----------
+        attacker.GetComponent<player>().updateStamina(attacker.jabStaminaUseBody);
+        //4.END----------
+
+        //Spelare Ett är attackerande
+        if (attacker.Opponent == false)
+        {
+            GetComponent<fightManager>().updatePlayerOne();
+         
+            if (singelPunch == true && GetComponent<fightManager>().simulation == false)
+            { 
+                GetComponent<fightManager>().afterActionChoicePlayerOne(1);
+                singelPunchInt++;
+            }
+
+
+        }
+
+        //Spelare Två är attackerande
+        else
+        {
+            i++;
+            Debug.Log("SpelareTvåsTur innan UpdatePlayerTwo");
+            GetComponent<fightManager>().updatePlayerTwo();
+            //GetComponent<fightManager>().afterActionChoicePlayerTwo();
+            if (singelPunch == true)
+            {
+                //Debug.Log("JabFight-script - Jab");
+                GetComponent<fightManager>().afterActionChoicePlayerTwo(1);
+            }
         }
 
     }

@@ -7,6 +7,13 @@ using TMPro;
 public class fightManager : MonoBehaviour
 {
     public bool simulation; //Skippar delay
+    public int jabPlayerOneInt; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int i; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int playerTwoIntI; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int simInt; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int BUGG_UpdatePlayer2Int; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int BUGG_UpdatePlayer1Int; //ENDAST VID FELSÖKNING AV SIMLERINGSSCRIPT
+    public int BUGG_afterActionChoicePlayerOne;
 
     public int roundFightLength; //Antal ronder i fighten
     public int roundActionsPerRound; //Antal aktioner varje spelare får göra innan ronden är slut
@@ -50,6 +57,7 @@ public class fightManager : MonoBehaviour
     public GameObject statisticsGO;
     public GameObject playerPanelGO;
     public GameObject gameloopScripsGO;
+    public GameObject simulationPanelGO; //Används för simulering vid balansering
 
     bool actionCompletedOrNot;
     bool actionCompletedOrNotSpecial;
@@ -62,6 +70,8 @@ public class fightManager : MonoBehaviour
     public succedOrNotAction SuccedOrNotAction;
 
     public playerStatsUIController PlayerStatsUIController;
+
+    public simulateFightDataSO SimulateFightDataSO;
 
 
     public void Start()
@@ -76,6 +86,7 @@ public class fightManager : MonoBehaviour
         {
             delayPlayerOneAction = false;
             delayPlayerTwoAction = false;
+            simuatePlayerOneAction = true;
         }
 
         if (delayPlayerOneAction == false)
@@ -129,7 +140,8 @@ public class fightManager : MonoBehaviour
 
        if (simuatePlayerOneAction == true)
         {
-            simulatePlayerOneAction();
+            //simulatePlayerOneAction();
+            simulationPanelGO.GetComponent<simulateFight>().playerOneAction();
         }
     }
 
@@ -189,6 +201,9 @@ public class fightManager : MonoBehaviour
         IEnumerator checkIfNextRoundCanStart()
     {
         //updateTextHitorNot(actionCompletedOrNot);
+        //Debug.Log("CheckIfNextRoundCanStart");
+        //Debug.Log("FightStatePlayerOne: " + PlayerOne.fighterStateNow);
+        //Debug.Log("FightStatePlayerTwo: " + PlayerTwo.fighterStateNow);
         if (PlayerOne.fighterStateNow == fighterState.None && PlayerTwo.fighterStateNow == fighterState.None)
         {
             if (playerOnesTurn == true)
@@ -257,11 +272,12 @@ public class fightManager : MonoBehaviour
         PlayerOne.staminaRecoveryMinValue();
         PlayerOne.staminaEffect();
         PlayerStatsUIController.fightStatModifierUpdate();
-
+        BUGG_UpdatePlayer1Int++;
     }
 
     public void updatePlayerTwo()
     {
+        //Debug.Log("UpdatePlayerTwo");
         fightUIScripts.GetComponent<healthPanelTextUpdate>().updateOpponentText();
         PlayerTwo.staminaRecoveryMinValue();
         PlayerTwo.staminaEffect();
@@ -298,16 +314,19 @@ public class fightManager : MonoBehaviour
 
     public void playerOneJabHead(bool singelPunch)
     {
+        jabPlayerOneInt++;
+        //Debug.Log("PlayerOneJabHead" + jabPlayerOneInt);
         GetComponent<jabFight>().jabHead(PlayerOne, PlayerTwo, singelPunch);
         //afterActionChoicePlayerOne();
-        //Debug.Log("PlayerOneJabHead");
+        
     }
 
     public void playerTwoJabHeadSingel()
     {
-        GetComponent<jabFight>().jabHead(PlayerTwo, PlayerOne,true);
+        GetComponent<jabFight>().jabHead(PlayerTwo, PlayerOne, true);
         //afterActionChoicePlayerTwo();
-        //Debug.Log("PlayerTwoJabHead");
+        //Debug.Log("PlayerTwoJabHead: " + playerTwoIntI);
+        playerTwoIntI++;
     }
 
     public void playerTwoJabHeadCombo()
@@ -315,6 +334,11 @@ public class fightManager : MonoBehaviour
         GetComponent<jabFight>().jabHead(PlayerTwo, PlayerOne, false);
         //afterActionChoicePlayerTwoCombo();
         //Debug.Log("PlayerTwoJabHeadCombo");
+    }
+
+    public void playerOneJabBody(bool singelPunch)
+    {
+        GetComponent<jabFight>().jabBody(PlayerOne, PlayerTwo, true);
     }
 
     /*
@@ -366,10 +390,19 @@ public void playerTwoJabHead()
 
     public void playerOneCrossHead(int accuracyBoost)
     {
-        Debug.Log("PlayerOneCrossHead");
+        //Debug.Log("PlayerOneCrossHead");
         //2.START-----------
-        actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy+accuracyBoost, PlayerTwo.guardHead, true);
-        
+        //actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy+accuracyBoost, PlayerTwo.guardHead, true);
+
+        if (PlayerTwo.jabKeepDistanceActive == true)
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy - PlayerTwo.jabKeepDistanceStatBoost + accuracyBoost, PlayerTwo.guardHead, true);
+        }
+        else
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy, PlayerTwo.guardHead, true);
+        }
+
         //2.END-----------
 
         //Träffar slaget
@@ -409,14 +442,26 @@ public void playerTwoJabHead()
         //4.END----------
         updatePlayerOne();
 
-        afterActionChoicePlayerOne();
-
+        if (GetComponent<fightManager>().simulation == false)
+        {
+            afterActionChoicePlayerOne(1);
+        }
     }
 
     public void playerTwoCrossHead(int accuracyBoost)
     {
         //2.START-----------
-        actionCompletedOrNot = SuccedOrNotAction.action(PlayerTwo.accuracy+accuracyBoost, PlayerOne.guardHead, true);
+        //actionCompletedOrNot = SuccedOrNotAction.action(PlayerTwo.accuracy+accuracyBoost, PlayerOne.guardHead, true);
+
+        if (PlayerOne.jabKeepDistanceActive == true)
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerTwo.accuracy - PlayerOne.jabKeepDistanceStatBoost + accuracyBoost, PlayerOne.guardHead, true);
+        }
+        else
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerTwo.accuracy, PlayerOne.guardHead, true);
+        }
+
         //2.END-----------
 
         //Träffar slaget
@@ -459,10 +504,11 @@ public void playerTwoJabHead()
         //4.END----------
         updatePlayerTwo();
 
-        //afterActionChoicePlayerTwo();
-
+        afterActionChoicePlayerTwo(1);
+    
     }
 
+    /*
     public void playerOneJabBody()
     {
 
@@ -493,9 +539,10 @@ public void playerTwoJabHead()
         //4.END----------
         
         updatePlayerOne();
-        afterActionChoicePlayerOne();
+        afterActionChoicePlayerOne(1);
 
     }
+    */
 
     public void playerTwoJabBody()
     {
@@ -532,10 +579,20 @@ public void playerTwoJabHead()
 
     }
 
-    public void playerOneCrossBody()
+    public void playerOneCrossBody(int accuracyBoost)
     {
         //2.START-----------
-        actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy, PlayerTwo.guardBody, false);
+        //actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy, PlayerTwo.guardBody, false);
+
+        if (PlayerOne.jabKeepDistanceActive == true)
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy - PlayerTwo.jabKeepDistanceStatBoost + accuracyBoost, PlayerTwo.guardBody, false);
+        }
+        else
+        {
+            actionCompletedOrNot = SuccedOrNotAction.action(PlayerOne.accuracy, PlayerTwo.guardBody, false);
+        }
+
         //2.END-----------
 
         //Träffar slaget
@@ -574,8 +631,9 @@ public void playerTwoJabHead()
         PlayerOne.GetComponent<player>().updateStamina(PlayerOne.crossStaminaUseBody);
         //4.END----------
         updatePlayerOne();
-
-        afterActionChoicePlayerOne();
+        
+        if (simulation == false)
+        afterActionChoicePlayerOne(1);
 
     }
 
@@ -677,7 +735,9 @@ public void playerTwoJabHead()
         yield return new WaitForSeconds(seconds);
         if (functionName == "updatePlayerTwoFunc")
         {
-            //Debug.Log("UpdatePlayer2");
+
+            //Debug.Log("UpdatePlayer2Func: " + BUGG_UpdatePlayer2Int);
+            BUGG_UpdatePlayer2Int++;
             updatePlayerTwo();
             StartCoroutine(checkIfNextRoundCanStart());
             //5.START--------
@@ -687,6 +747,7 @@ public void playerTwoJabHead()
 
         if (functionName == "updatePlayerOneFunc")
         {
+            //Debug.Log("UpdatePlayer1");
             updatePlayerOne();
             StartCoroutine(checkIfNextRoundCanStart());
             //5.START--------
@@ -704,7 +765,8 @@ public void playerTwoJabHead()
 
         if (functionName == "playerTwoAction")
         {
-            /*
+
+           
             if (PlayerTwo.GetComponent<player>().fightStyleNow == fightStyle.Headhunter)
             {
                 GetComponent<playerTwoAction>().headHunter();
@@ -714,7 +776,7 @@ public void playerTwoJabHead()
             {
                 GetComponent<playerTwoAction>().bodySnatcher();
             }
-            */
+            
 
             //TEST
 
@@ -725,7 +787,7 @@ public void playerTwoJabHead()
             //GetComponent<playerTwoAction>().crossBody();
             //GetComponent<playerTwoAction>().onlyJabMeasure();
             //GetComponent<playerTwoAction>().onlyJabKeepDistance();
-            GetComponent<playerTwoAction>().test();
+            //GetComponent<playerTwoAction>().test();
             //GetComponent<playerTwoAction>().oneTwoCombo();
         }
 
@@ -741,11 +803,21 @@ public void playerTwoJabHead()
     
 
     //10. START--------------
-    public void afterActionChoicePlayerOne()
+    public void afterActionChoicePlayerOne(int actionPointCost)
     {
-        StartCoroutine(waitForSecondsFunc(fightUIScripts.GetComponent<commentatorManager>().waitSecondsBeforeUpdatePlayer * 2, "updatePlayerTwoFunc"));
+        Debug.Log("afterActionChoicePlayerOne");
+        BUGG_afterActionChoicePlayerOne++;
+
+          StartCoroutine(waitForSecondsFunc(fightUIScripts.GetComponent<commentatorManager>().waitSecondsBeforeUpdatePlayer * 2, "updatePlayerTwoFunc"));
+        
         disableFighterPanel();
-        //GetComponent<actionsLeftPlayer>().subActionPoints();
+        GetComponent<actionsLeftPlayer>().subActionPoints(actionPointCost);
+
+        /*if (simulation == false)
+            GetComponent<actionsLeftPlayer>().subActionPoints(actionPointCost);
+        else
+            simulationPanelGO.GetComponent<simulateFight>().subActionPoints(actionPointCost);
+        */
         PlayerOne.fightStatisticsNumberOfActions();
         actionPerformedPlayerOne.text = "Action performed: " + PlayerOne.actionsPerformed;
         actionSuccededPlayerOne.text = "Action succeded: " + PlayerOne.actionsSucceded;
@@ -756,8 +828,17 @@ public void playerTwoJabHead()
 
     public void afterActionChoicePlayerTwo(int actionPointCost)
     {
+        //Debug.Log("afterActionChoicePlayerTwo" + i);
+        i++;
         StartCoroutine(waitForSecondsFunc(fightUIScripts.GetComponent<commentatorManager>().waitSecondsBeforeUpdateOpponent * 2, "updatePlayerOneFunc"));
+
         GetComponent<actionsLeftPlayer>().subActionPoints(actionPointCost);
+        /*if (simulation == false)
+            GetComponent<actionsLeftPlayer>().subActionPoints(actionPointCost);
+        else
+            simulationPanelGO.GetComponent<simulateFight>().subActionPoints(actionPointCost);
+            */
+
         PlayerTwo.fightStatisticsNumberOfActions();
         actionPerformedPlayerTwo.text = "Action performed: " + PlayerTwo.actionsPerformed;
         actionSuccededPlayerTwo.text = "Action succeded: " + PlayerTwo.actionsSucceded;
@@ -796,18 +877,26 @@ public void playerTwoJabHead()
             rankUpPlayer();
             statisticsGO.GetComponent<fightStatistics>().addVictory();
             PlayerOne.GetComponent<boxRecord>().victory++;
+            SimulateFightDataSO.playerOneWinner.Add(true);
         }
         else
         {
             victoryPanelGO.GetComponent<afterFightUpdate>().updateText(PlayerOne, false);
             statisticsGO.GetComponent<fightStatistics>().addLose();
             PlayerOne.GetComponent<boxRecord>().defeat++;
+            SimulateFightDataSO.playerOneWinner.Add(false);
         }
         statisticsGO.GetComponent<fightStatistics>().addKO();
-    
-        PlayerOne.resetAfterFight();
-        PlayerTwo.resetAfterFight();
+        
+        SimulateFightDataSO.howTheFightEnded.Add("KO");
+        SimulateFightDataSO.endedInRound.Add(GetComponent<roundManager>().roundNow);
+
         endOfFightFunction();
+
+        //SKA EJ VARA BORTKOMMENTERADE VID VANLIGT SPEL. ENDAST VID SIMULERING
+        //PlayerOne.resetAfterFight();
+        //PlayerTwo.resetAfterFight();
+
     }
 
     public void fightEndedDecision()
@@ -822,25 +911,33 @@ public void playerTwoJabHead()
             rankUpPlayer();
             statisticsGO.GetComponent<fightStatistics>().addVictory();
             PlayerOne.GetComponent<boxRecord>().victory++;
+            SimulateFightDataSO.playerOneWinner.Add(true);
         }
         else
         {
             victoryPanelGO.GetComponent<afterFightUpdate>().decisionUpdate(false);
             statisticsGO.GetComponent<fightStatistics>().addLose();
             PlayerOne.GetComponent<boxRecord>().defeat++;
+            SimulateFightDataSO.playerOneWinner.Add(false);
         }
         statisticsGO.GetComponent<fightStatistics>().addDecision();
 
-        PlayerOne.resetAfterFight();
-        PlayerTwo.resetAfterFight();
+        SimulateFightDataSO.howTheFightEnded.Add("Decision");
+        SimulateFightDataSO.endedInRound.Add(GetComponent<roundManager>().roundNow);
+
         endOfFightFunction();
+
+        //SKA EJ VARA BORTKOMMENTERADE VID VANLIGT SPEL. ENDAST VID SIMULERING
+        //PlayerOne.resetAfterFight();
+        //PlayerTwo.resetAfterFight();
+        
     }
 
     public void rankUpPlayer()
     {
        
         opponentIndex++;
-        Debug.Log("Ranked Up");
+        //Debug.Log("Ranked Up");
         //Debug.Log(opponentListGO.PlayerList.Count);
         if (opponentIndex >= opponentListGO.PlayerList.Count)
         {
@@ -856,7 +953,11 @@ public void playerTwoJabHead()
     public void simulatePlayerOneAction()
     {
         //playerOneJabHead();
-        playerOneCrossHead(0);
+        //playerOneCrossHead(0);
+        //Debug.Log("Simulering Player One Action: " + simInt);
+        //simInt++;
+        simulationPanelGO.GetComponent<simulateFight>().playerOneAction();
+
     }
 
     public void addStatistics()
@@ -877,15 +978,27 @@ public void playerTwoJabHead()
 
     public void endOfFightFunction()
     {
+        PlayerOne.resetAfterFight();
+        simulationPanelGO.GetComponent<simulateFight>().endOfFight();
         gameloopScripsGO.GetComponent<rankingManager>().checkIfPlayerWillRankUp(PlayerOne.GetComponent<boxRecord>().victory - PlayerOne.GetComponent<boxRecord>().defeat);
         //Debug.Log("Vinster: " + PlayerOne.GetComponent<boxRecord>().victory);
         //Debug.Log("Förluster: " + PlayerOne.GetComponent<boxRecord>().defeat);
         playerRankedLvl = gameloopScripsGO.GetComponent<rankingManager>().playerRankedLvl;
-        //Skapa nya motståndare
-        for (int i = 0; opponentListRandomGO.GetComponent<playerList>().PlayerList.Count > i; i++) 
+
+        //Om simulering för balansering är aktiverad
+        if (simulation == false)
         {
-            opponentListRandomGO.GetComponent<playerList>().PlayerList[i].GetComponent<createOpponent>().setLvl(playerRankedLvl);
-            opponentListRandomGO.GetComponent<playerList>().PlayerList[i].GetComponent<createOpponent>().createOpponentFunction();
+            //Skapa nya motståndare
+            for (int i = 0; opponentListRandomGO.GetComponent<playerList>().PlayerList.Count > i; i++)
+            {
+                opponentListRandomGO.GetComponent<playerList>().PlayerList[i].GetComponent<createOpponent>().setLvl(playerRankedLvl);
+                opponentListRandomGO.GetComponent<playerList>().PlayerList[i].GetComponent<createOpponent>().createOpponentFunction();
+            }
         }
     }
-}
+
+    public void startCheckIfNextRoundCanStart()
+    {
+        StartCoroutine(checkIfNextRoundCanStart());
+    }
+}   

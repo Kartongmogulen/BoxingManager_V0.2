@@ -16,7 +16,7 @@ public class combinations : MonoBehaviour
 
     public void oneTwo_JabCrossPlayerTwo()
     {
-        //Debug.Log("OneTwoPlayerTwo");
+        Debug.Log("OneTwoPlayerTwo");
         GetComponent<fightManager>().playerTwoJabHeadCombo();
         GetComponent<fightManager>().playerTwoCrossHead(AttributeManager.oneTwoAccuracyIncrease[0]);
         GetComponent<fightManager>().afterActionChoicePlayerTwo(2);

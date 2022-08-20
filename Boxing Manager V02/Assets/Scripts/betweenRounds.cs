@@ -17,7 +17,7 @@ public class betweenRounds : MonoBehaviour
 
     public void recoverStats(player PlayerTwo)
     {
-        Debug.Log("Between Rounds Scripts");
+        //Debug.Log("Between Rounds Scripts");
         newStaminaValue = PlayerOne.staminaHealthNow + PlayerOne.staminaRecoveryBetweenRounds;
         if (newStaminaValue > PlayerOne.staminaHealthStart)
         {
