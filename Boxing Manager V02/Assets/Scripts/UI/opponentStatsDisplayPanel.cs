@@ -9,6 +9,7 @@ public class opponentStatsDisplayPanel : MonoBehaviour
 
     public GameObject fightScriptsGO;
     public GameObject playerListRandomGO;
+    //public GameObject playerListFixedGO;
     public player Opponent;
 
     public Text nameOpponentText;
@@ -25,7 +26,7 @@ public class opponentStatsDisplayPanel : MonoBehaviour
 
     private void Start()
     {
-        Opponent = fightScriptsGO.GetComponent<fightManager>().opponentListGO.PlayerList[fightScriptsGO.GetComponent<fightManager>().opponentIndex];
+        Opponent = fightScriptsGO.GetComponent<fightManager>().opponentListRandomGO.PlayerList[fightScriptsGO.GetComponent<fightManager>().opponentIndex];
         nameOpponentText.text = "Name: " + Opponent.name;
         accuracyText.text = "Accuracy: " + Opponent.accuracy;
         StrengthText.text = "Strength: " + Opponent.strength;
@@ -58,6 +59,22 @@ public class opponentStatsDisplayPanel : MonoBehaviour
     public void updateOpponentRandom(int index)
     {
         Opponent = playerListRandomGO.GetComponent<playerList>().PlayerList[index].GetComponent<player>();
+        nameOpponentText.text = "Name: " + Opponent.name;
+        accuracyText.text = "Accuracy: " + Opponent.accuracy;
+        StrengthText.text = "Strength: " + Opponent.strength;
+        knockDownText.text = "Knockdown: " + Opponent.knockdownChance;
+        BodySnatcherText.text = "Bodysnatcher: " + Opponent.crossStaminaRecoveryDamageBody;
+        guardHeadText.text = "Guard (Head): " + Opponent.guardHead;
+        guardBodyText.text = "Guard (Body): " + Opponent.guardBody;
+        HealthHeadText.text = "Health (Head): " + Opponent.headHealthStart;
+        HealthBodyText.text = "Health (Body): " + Opponent.bodyHealthStart;
+        staminaHealthMaxText.text = "Stamina, Max: " + Opponent.staminaHealthStart;
+        staminaRecoveryHealthText.text = "Stamina, Recovery: " + Opponent.staminaRecoveryBetweenRounds;
+    }
+
+    public void updateOpponentFixed(int index)
+    {
+        Opponent = fightScriptsGO.GetComponent<fightManager>().opponentListRankedGO.GetComponent<playerList>().PlayerList[index].GetComponent<player>();
         nameOpponentText.text = "Name: " + Opponent.name;
         accuracyText.text = "Accuracy: " + Opponent.accuracy;
         StrengthText.text = "Strength: " + Opponent.strength;

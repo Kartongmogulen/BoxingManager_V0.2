@@ -85,6 +85,10 @@ public class playerTwoActionDisplay : MonoBehaviour
         crossHeadText.text = "Cross head (count): " + crossHeadAmount;
         jabBodyText.text = "Jab body (count): " + jabBodyAmount;
         crossBodyText.text = "Cross body (count): " + crossBodyAmount;
+
+        actionOneText.text = "Action 1: ";
+        actionTwoText.text = "Action 2: ";
+        actionThreeText.text = "Action 3: ";
     }
 
    

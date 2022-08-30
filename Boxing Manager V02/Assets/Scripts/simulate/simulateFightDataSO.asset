@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610da435472981c468bb9bd5605a3d71, type: 3}
   m_Name: simulateFightDataSO
   m_EditorClassIdentifier: 
-  playerOneWinner: 01010101010101000101
+  playerOneWinner: 0101010101010101
   howTheFightEnded:
   - KO
-  - Decision
-  - Decision
-  - Decision
   - KO
-  - Decision
-  - Decision
-  - Decision
-  - Decision
   - KO
-  endedInRound: 05000000060000000600000006000000060000000600000006000000060000000600000005000000
+  - KO
+  - KO
+  - KO
+  - KO
+  - KO
+  endedInRound: 0500000004000000010000000200000001000000010000000200000005000000

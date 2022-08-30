@@ -8,15 +8,5 @@ public class fightAwardList : MonoBehaviour
 
     public List<int> awardListExperience;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

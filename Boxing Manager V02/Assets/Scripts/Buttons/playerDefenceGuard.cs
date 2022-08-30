@@ -13,6 +13,7 @@ public class playerDefenceGuard : MonoBehaviour
     private void Start()
     {
         PlayerStatsUIController = playerPanelGO.GetComponent<playerStatsUIController>();
+        PlayerStatsUIController.guardDuringFight();
     }
 
     public void addGuardPointHead()

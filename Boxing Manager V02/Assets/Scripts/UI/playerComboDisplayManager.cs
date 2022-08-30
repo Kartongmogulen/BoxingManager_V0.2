@@ -16,6 +16,9 @@ public class playerComboDisplayManager : MonoBehaviour
         {
             oneTwoButton.gameObject.SetActive(false);
         }
+
+        else
+            oneTwoButton.gameObject.SetActive(true);
     }
     public void checkForActiveCombosButton()
     {

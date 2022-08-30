@@ -127,9 +127,9 @@ public class player : MonoBehaviour
 
         if (Opponent == true)
         {
-            playerLvlHealthBody = playerLvl;
-            playerLvlHealthHead = playerLvl;
-            playerLvlHealthStamina = playerLvl;
+            playerLvlHealthBody = playerLvl+1;
+            playerLvlHealthHead = playerLvl+1;
+            playerLvlHealthStamina = playerLvl+1;
 
             bodyHealthStart = playerPanel.GetComponent<attributeLevelManager>().bodyHealthByLvl[playerLvlHealthBody];
             headHealthStart = playerPanel.GetComponent<attributeLevelManager>().headHealthByLvl[playerLvlHealthHead];
@@ -400,6 +400,8 @@ public class player : MonoBehaviour
 
         //Debug.Log(name + (" Accuracy: " + accuracy));
         //Debug.Log(name + (" Strength: " + strength));
+
+       
     }
 }
 

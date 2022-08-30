@@ -5,13 +5,16 @@ using UnityEngine;
 public class combinations : MonoBehaviour
 {
     public attributeManager AttributeManager;
+    public int costOneTwoComboExtra; //Kostnaden över standard 1 AP
 
     public void oneTwo_JabCrossPlayerOne() 
     {
-
-        GetComponent<fightManager>().playerOneJabHead(false);
-        GetComponent<fightManager>().playerOneCrossHead(AttributeManager.oneTwoAccuracyIncrease[0]);
-
+        if (GetComponent<actionsLeftPlayer>().actionPointsNow >= costOneTwoComboExtra+1)
+        {
+            GetComponent<actionsLeftPlayer>().subActionPoints(costOneTwoComboExtra);
+            GetComponent<fightManager>().playerOneJabHead(false);
+            GetComponent<fightManager>().playerOneCrossHead(AttributeManager.oneTwoAccuracyIncrease[0]);
+        }
     }
 
     public void oneTwo_JabCrossPlayerTwo()

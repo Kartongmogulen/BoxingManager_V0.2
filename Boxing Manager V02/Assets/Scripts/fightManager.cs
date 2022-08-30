@@ -124,7 +124,7 @@ public class fightManager : MonoBehaviour
         }
         else
         {
-            opponentIndex = 1;
+            opponentIndex = 0;
             PlayerTwo = opponentListRankedGO.GetComponent<playerList>().PlayerList[opponentIndex];
         }
     
@@ -143,6 +143,10 @@ public class fightManager : MonoBehaviour
             //simulatePlayerOneAction();
             simulationPanelGO.GetComponent<simulateFight>().playerOneAction();
         }
+
+        //UI
+        fightUIScripts.GetComponent<commentatorManager>().commentatorText.text = " ";
+
     }
 
     /// <summary>
@@ -894,13 +898,14 @@ public void playerTwoJabHead()
         endOfFightFunction();
 
         //SKA EJ VARA BORTKOMMENTERADE VID VANLIGT SPEL. ENDAST VID SIMULERING
-        //PlayerOne.resetAfterFight();
-        //PlayerTwo.resetAfterFight();
+        PlayerOne.resetAfterFight();
+        PlayerTwo.resetAfterFight();
 
     }
 
     public void fightEndedDecision()
     {
+
         endOfFight = true;
         fightPanelGO.active = false;
         victoryPanelGO.active = true;
@@ -928,8 +933,8 @@ public void playerTwoJabHead()
         endOfFightFunction();
 
         //SKA EJ VARA BORTKOMMENTERADE VID VANLIGT SPEL. ENDAST VID SIMULERING
-        //PlayerOne.resetAfterFight();
-        //PlayerTwo.resetAfterFight();
+        PlayerOne.resetAfterFight();
+        PlayerTwo.resetAfterFight();
         
     }
 
@@ -939,7 +944,7 @@ public void playerTwoJabHead()
         opponentIndex++;
         //Debug.Log("Ranked Up");
         //Debug.Log(opponentListGO.PlayerList.Count);
-        if (opponentIndex >= opponentListGO.PlayerList.Count)
+        if (gameloopScripsGO.GetComponent<rankingManager>().playerRanked == true)
         {
             victoryPanelGO.GetComponent<afterFightUpdate>().updateTextChampion(PlayerOne);
         }
@@ -978,6 +983,8 @@ public void playerTwoJabHead()
 
     public void endOfFightFunction()
     {
+        
+
         PlayerOne.resetAfterFight();
         simulationPanelGO.GetComponent<simulateFight>().endOfFight();
         gameloopScripsGO.GetComponent<rankingManager>().checkIfPlayerWillRankUp(PlayerOne.GetComponent<boxRecord>().victory - PlayerOne.GetComponent<boxRecord>().defeat);
@@ -995,6 +1002,8 @@ public void playerTwoJabHead()
                 opponentListRandomGO.GetComponent<playerList>().PlayerList[i].GetComponent<createOpponent>().createOpponentFunction();
             }
         }
+
+       
     }
 
     public void startCheckIfNextRoundCanStart()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class opponentChooseButton : MonoBehaviour
 {
     public GameObject playerListRandoms;
+    public GameObject playerListChampionsFixed;
     public GameObject fightUIScriptsGO;
     public GameObject fightScriptsGO;
 
@@ -28,7 +29,7 @@ public class opponentChooseButton : MonoBehaviour
 
     public void chooseOpponentRanked()
     {
-        fightUIScriptsGO.GetComponent<opponentStatsDisplayPanel>().updateOpponent();
+        fightUIScriptsGO.GetComponent<opponentStatsDisplayPanel>().updateOpponentFixed(0);
         //fightScriptsGO.GetComponent<fightManager>().setOpponentIndex(0);
         //Debug.Log("Ranked");
     }

@@ -28,6 +28,31 @@ public class mouseOverButtonInfo : MonoBehaviour
 
     //public TextMeshProUGUI accuracyStatText;
 
+    public void colorStatIfAffected()
+    {
+
+        if (playerTwoAccuracyStatModifier - PlayerOne.measureJabIncreaseAccuracyWhenActive > 0)
+        {
+            //Debug.Log("MouseOverJab Mod != 0");
+            accuracyStatText.color = new Color(1, 0, 0, 1);
+
+        }
+
+        else if (playerTwoAccuracyStatModifier - PlayerOne.measureJabIncreaseAccuracyWhenActive < 0)
+        {
+            //Debug.Log("MouseOverJab Mod != 0");
+            accuracyStatText.color = new Color(0, 0.5f, 0, 1);
+
+        }
+
+        else
+        {
+            //Debug.Log("MouseOverJab Mod = 0");
+            accuracyStatText.color = new Color(0, 0, 0, 1);
+
+        }
+    }
+
 
     public void mouseOverJabHead()
     {
@@ -39,18 +64,7 @@ public class mouseOverButtonInfo : MonoBehaviour
         accuracyStatText.text = "Accuracy: " + (PlayerOne.jabAccuracyHead + PlayerOne.measureJabIncreaseAccuracyWhenActive - playerTwoAccuracyStatModifier);
         guardStatText.text = "Guard (def): " + PlayerTwo.guardHead;
 
-        if (playerTwoAccuracyStatModifier > 0)
-        {
-            //Debug.Log("MouseOverJab Mod != 0");
-            accuracyStatText.color = new Color(1,0,0,1); 
-   
-        }
-        else
-        {
-            //Debug.Log("MouseOverJab Mod = 0");
-            accuracyStatText.color = new Color(0, 0, 0, 1);
-           
-        }
+        colorStatIfAffected();
     }
 
     public void mouseOverJabMeasure()
@@ -62,6 +76,7 @@ public class mouseOverButtonInfo : MonoBehaviour
         staminaUsePlayerText.text = "Stamina use: " + PlayerOne.jabStaminaUseLow;
         accuracyStatText.text = "Accuracy: " + (PlayerOne.jabAccuracyHead + PlayerOne.measureJabIncreaseAccuracyWhenActive - playerTwoAccuracyStatModifier);
         guardStatText.text = "Guard (def): " + PlayerTwo.guardHead;
+        colorStatIfAffected();
     }
 
     public void mouseOverKeepDistance()
@@ -73,6 +88,7 @@ public class mouseOverButtonInfo : MonoBehaviour
         staminaUsePlayerText.text = "Stamina use: " + PlayerOne.jabStaminaUseHead;
         accuracyStatText.text = "Accuracy: " + (PlayerOne.jabAccuracyHead + PlayerOne.measureJabIncreaseAccuracyWhenActive - playerTwoAccuracyStatModifier);
         guardStatText.text = "Guard (def): " + PlayerTwo.guardHead;
+        colorStatIfAffected();
     }
 
     public void mouseOverJabBody()
@@ -84,6 +100,7 @@ public class mouseOverButtonInfo : MonoBehaviour
         staminaUsePlayerText.text = "Stamina use: " + PlayerOne.jabStaminaUseBody;
         accuracyStatText.text = "Accuracy: " + PlayerOne.jabAccuracyBody;
         guardStatText.text = "Guard (def): " + PlayerTwo.guardBody;
+        colorStatIfAffected();
     }
 
     public void mouseOverCrossHead()
@@ -96,18 +113,7 @@ public class mouseOverButtonInfo : MonoBehaviour
         accuracyStatText.text = "Accuracy: " + (PlayerOne.jabAccuracyHead + PlayerOne.measureJabIncreaseAccuracyWhenActive - playerTwoAccuracyStatModifier); ;
         guardStatText.text = "Guard (def): " + PlayerTwo.guardHead;
 
-        if (playerTwoAccuracyStatModifier > 0)
-        {
-            //Debug.Log("MouseOverJab Mod != 0");
-            accuracyStatText.color = new Color(1, 0, 0, 1);
-
-        }
-        else
-        {
-            //Debug.Log("MouseOverJab Mod = 0");
-            accuracyStatText.color = new Color(0, 0, 0, 1);
-
-        }
+        colorStatIfAffected();
     }
 
     public void mouseOverCrossBody()
@@ -119,6 +125,8 @@ public class mouseOverButtonInfo : MonoBehaviour
         staminaUsePlayerText.text = "Stamina use: " + PlayerOne.crossStaminaUseBody;
         accuracyStatText.text = "Accuracy: " + PlayerOne.crossAccuracyBody;
         guardStatText.text = "Guard (def): " + PlayerTwo.guardBody;
+
+        colorStatIfAffected();
     }
 
     public void OnMouseExit()
